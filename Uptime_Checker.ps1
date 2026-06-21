@@ -188,22 +188,21 @@ function Show-TimerPopup {
 }
 
 function CreateSCTask {
+    $dir      = "C:\ProgramData\Microsoft\Scripts"
+    $vbs      = "$dir\UptimeChecker.vbs"
     $taskName = "UptimeChecker - Process"
     $time = (Get-Date).AddHours(1)
 
-    $scriptPath = $PSCommandPath
 
     $action = New-ScheduledTaskAction `
-        -Execute "powershell.exe" `
-        -Argument "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -STA -File `"$scriptPath`""
+        -Execute "wscript.exe" `
+        -Argument "`"$vbs`""
 
     $trigger = New-ScheduledTaskTrigger -Once -At $time
 
-    # Kullanıcı oturumu içinde çalışsın ki WinForms görünsün
     $principal = New-ScheduledTaskPrincipal `
-        -UserId "$env:USERDOMAIN\$env:USERNAME" `
-        -LogonType Interactive `
-        -RunLevel Highest
+        -UserId "$env:USERDOMAIN\$env:USERNAME"
+        -LogonType Interactive
 
     $settings = New-ScheduledTaskSettingsSet `
         -AllowStartIfOnBatteries `
@@ -211,13 +210,14 @@ function CreateSCTask {
         -StartWhenAvailable `
         -ExecutionTimeLimit (New-TimeSpan -Hours 2)
 
+
     Register-ScheduledTask `
         -TaskName $taskName `
         -Action $action `
         -Trigger $trigger `
         -Principal $principal `
         -Settings $settings `
-        -Force | Out-Null
+        -Force | Out-Null  
 }
 
 # ==============================
