@@ -224,7 +224,7 @@ function CreateSCTask {
 # CONFIG
 # ==============================
 
-$ThresholdHours = 0
+$ThresholdHours = 48
 $RegPath = "HKCU:\Software\UptimeChecker"
 $StateValue = "State"   # 0 = first, 1 = second, 2 = final countdown
 
