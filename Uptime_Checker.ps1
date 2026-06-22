@@ -139,7 +139,7 @@ function Show-TimerPopup {
     })
 
     $title = New-Object System.Windows.Forms.Label
-    $title.Text = "Sistem Bildirimi"
+    $title.Text = "Bilgi Teknolojileri"
     $title.Font = New-Object System.Drawing.Font("Segoe UI",10,[System.Drawing.FontStyle]::Bold)
     $title.ForeColor = [System.Drawing.Color]::White
     $title.Location = New-Object System.Drawing.Point(15,10)
@@ -268,6 +268,7 @@ if ($state -eq 0) {
         exit 0
     }
 
+    Set-ItemProperty $RegPath -Name $StateValue -Value 0 -Force
     Restart-Now
     exit 0
 }
@@ -281,12 +282,14 @@ elseif ($state -eq 1) {
         exit 0
     }
 
+    Set-ItemProperty $RegPath -Name $StateValue -Value 0 -Force
     Restart-Now
     exit 0
 }
 
 elseif ($state -eq 2) {
     Show-TimerPopup
+    Set-ItemProperty $RegPath -Name $StateValue -Value 0 -Force
     Restart-Now
     exit 0
 }
